@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Distance Sample</title>
+</head>
+<body>
+
+	<h1>Distance Formula</h1>
+	<p>Using Haversine Formula</p>
+
+	<div id="demo"></div>
+
+	<div>
+
+		Latitude 1
+		<input type="text" id="lat1">
+		<br>
+		Longitude 1
+		<input type="text" id="long1">		
+		<br>
+		<br>
+		Latitude 2
+		<input type="text" id="lat2">
+		<br>
+		Longitude 2
+		<input type="text" id="long2">
+		<br><br>
+		<button onclick="distance()">Calculate Distance</button>
+		<br><br>
+		<div id="result">0</div>
+	</div>
+
+<script>
+	var x = document.getElementById("demo");
+	function getLocation() {
+	    if (navigator.geolocation) {
+	        navigator.geolocation.getCurrentPosition(showPosition);
+	    } else {
+	        x.innerHTML = "Geolocation is not supported by this browser.";
+	    }
+	}
+	function showPosition(position) {
+		console.log(position);
+		document.querySelector('#lat1').value = position.coords.latitude;
+		document.querySelector('#long1').value = position.coords.longitude;
+	}
+	function distance(){
+		lat1 = document.querySelector('#lat1').value;
+		long1 = document.querySelector('#long1').value;
+		lat2 = document.querySelector('#lat2').value;
+		long2 = document.querySelector('#long2').value;
+		console.log(lat1);
+		console.log(long1);
+		console.log(lat2);
+		console.log(long2);
+		document.querySelector('#result').innerHTML = getDistanceFromLatLonInKm(lat1,long1,lat2,long2) + " KM";
+	}
+	function getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2) {
+	  var R = 6371; // Radius of the earth in km
+	  var dLat = deg2rad(lat2-lat1);  // deg2rad below
+	  var dLon = deg2rad(lon2-lon1); 
+	  var a = 
+	    Math.sin(dLat/2) * Math.sin(dLat/2) +
+	    Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * 
+	    Math.sin(dLon/2) * Math.sin(dLon/2)
+	    ; 
+	  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+	  var d = R * c; // Distance in km
+	  return d;
+	}
+
+	function deg2rad(deg) {
+	  return deg * (Math.PI/180)
+	}
+
+	getLocation();
+	showPosition();
+</script>
+
+</body>
+</html>
